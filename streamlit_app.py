@@ -1,32 +1,46 @@
 import streamlit as st
+import streamlit as st
+import random
 
-st.title("Kalkulori")
-def hitung_bmr(gender, berat, tinggi, usia):
-    if gender == "Laki-laki":
-        bmr = 88.36 + (13.4 * berat) + (4.8 * tinggi) - (5.7 * usia)
+def get_questions():
+    return [
+        {"question": "Apa sumber utama karbohidrat dalam makanan pokok Indonesia?", "options": ["Daging", "Nasi", "Susu", "Keju"], "answer": "Nasi"},
+        {"question": "Vitamin yang banyak terdapat dalam wortel adalah?", "options": ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], "answer": "Vitamin A"},
+        {"question": "Manakah yang termasuk protein nabati?", "options": ["Ayam", "Ikan", "Tahu", "Daging Sapi"], "answer": "Tahu"},
+        {"question": "Apa yang harus dilakukan untuk menjaga pola makan sehat?", "options": ["Makan fast food setiap hari", "Minum soda berlebihan", "Konsumsi sayur dan buah", "Makan sebelum tidur"], "answer": "Konsumsi sayur dan buah"},
+    ]
+
+def main():
+    st.title("🎮 Game Edukasi Pangan")
+    st.write("Jawab pertanyaan tentang pangan dan gizi untuk menguji pengetahuanmu!")
+    
+    if 'score' not in st.session_state:
+        st.session_state.score = 0
+        st.session_state.q_index = 0
+        st.session_state.questions = random.sample(get_questions(), len(get_questions()))
+
+    if st.session_state.q_index < len(st.session_state.questions):
+        q_data = st.session_state.questions[st.session_state.q_index]
+        st.write(f"**{q_data['question']}**")
+        choice = st.radio("Pilih jawaban:", q_data["options"], key=f"q{st.session_state.q_index}")
+        
+        if st.button("Submit"):
+            if choice == q_data["answer"]:
+                st.session_state.score += 1
+                st.success("✅ Jawaban benar!")
+            else:
+                st.error(f"❌ Jawaban salah! Jawaban yang benar adalah {q_data['answer']}")
+            
+            st.session_state.q_index += 1
+            st.experimental_rerun()
     else:
-        bmr = 447.6 + (9.2 * berat) + (3.1 * tinggi) - (4.3 * usia)
-    return bmr
+        st.write(f"### 🎉 Permainan selesai! Skor akhir: {st.session_state.score}/{len(st.session_state.questions)}")
+        if st.button("Main lagi"):
+            st.session_state.score = 0
+            st.session_state.q_index = 0
+            st.session_state.questions = random.sample(get_questions(), len(get_questions()))
+            st.experimental_rerun()
 
-def hitung_kalori(bmr, aktivitas):
-    faktor_aktivitas = {
-        "Sangat kurang aktif": 1.2,
-        "Kurang aktif": 1.375,
-        "Cukup aktif": 1.55,
-        "Aktif": 1.725,
-        "Sangat aktif": 1.9
-    }
-    return bmr * faktor_aktivitas[aktivitas]
+if __name__ == "__main__":
+    main()
 
-st.title("Kalkulator Kebutuhan Kalori Harian")
-
-gender = st.radio("Pilih Gender:", ["Laki-laki", "Perempuan"])
-usia = st.number_input("Usia (tahun):", min_value=1, max_value=120, value=25)
-berat = st.number_input("Berat Badan (kg):", min_value=10.0, max_value=300.0, value=70.0, step=0.1)
-tinggi = st.number_input("Tinggi Badan (cm):", min_value=50.0, max_value=250.0, value=170.0, step=0.1)
-aktivitas = st.selectbox("Tingkat Aktivitas:", ["Sangat kurang aktif", "Kurang aktif", "Cukup aktif", "Aktif", "Sangat aktif"])
-
-if st.button("Hitung Kalori"):
-    bmr = hitung_bmr(gender, berat, tinggi, usia)
-    kebutuhan_kalori = hitung_kalori(bmr, aktivitas)
-    st.success(f"Kebutuhan kalori harian Anda: {kebutuhan_kalori:.2f} kkal")
