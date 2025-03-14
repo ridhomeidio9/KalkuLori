@@ -1,18 +1,17 @@
 import streamlit as st
-import streamlit as st
 import random
 
 def get_questions():
     return [
-        {"question": "Apa sumber utama karbohidrat dalam makanan pokok Indonesia?", "options": ["Daging", "Nasi", "Susu", "Keju"], "answer": "Nasi"},
-        {"question": "Vitamin yang banyak terdapat dalam wortel adalah?", "options": ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], "answer": "Vitamin A"},
-        {"question": "Manakah yang termasuk protein nabati?", "options": ["Ayam", "Ikan", "Tahu", "Daging Sapi"], "answer": "Tahu"},
-        {"question": "Apa yang harus dilakukan untuk menjaga pola makan sehat?", "options": ["Makan fast food setiap hari", "Minum soda berlebihan", "Konsumsi sayur dan buah", "Makan sebelum tidur"], "answer": "Konsumsi sayur dan buah"},
+        {"question": "Siapa hero pertama yang diberikan secara gratis di Mobile Legends?", "options": ["Layla", "Miya", "Zilong", "Alucard"], "answer": "Layla"},
+        {"question": "Apa role utama dari hero Tigreal?", "options": ["Marksman", "Tank", "Mage", "Assassin"], "answer": "Tank"},
+        {"question": "Item apa yang memberikan efek lifesteal terbesar untuk hero physical attack?", "options": ["Blade of Despair", "Endless Battle", "Bloodlust Axe", "Haas's Claws"], "answer": "Haas's Claws"},
+        {"question": "Berapa jumlah pemain dalam satu tim di mode klasik Mobile Legends?", "options": ["3", "4", "5", "6"], "answer": "5"},
     ]
 
 def main():
-    st.title("🎮 Game Edukasi Pangan")
-    st.write("Jawab pertanyaan tentang pangan dan gizi untuk menguji pengetahuanmu!")
+    st.title("🎮 Game Kuis Mobile Legends")
+    st.write("Uji pengetahuanmu tentang Mobile Legends dengan menjawab pertanyaan berikut!")
     
     if 'score' not in st.session_state:
         st.session_state.score = 0
@@ -43,4 +42,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
